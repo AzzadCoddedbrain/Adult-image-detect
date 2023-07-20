@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "134917373094",
+    "project_id": "imagensfw-df2f7",
+    "storage_bucket": "imagensfw-df2f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134917373094:android:75d3d661fab94e8bd08867",
+        "android_client_info": {
+          "package_name": "com.example.imagenfsw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134917373094-klo6v11fl5k7n2oa3rm7m2ault6n67f5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZIq3SuHVk_iEYnfxUaqBte8hQBSVIV9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134917373094-klo6v11fl5k7n2oa3rm7m2ault6n67f5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
