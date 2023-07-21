@@ -1,24 +1,11 @@
 package com.example.imagenfsw
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color.green
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.CalendarContract.Colors
-import android.provider.Settings.Global
 import android.util.Log
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import coil.ImageLoader
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import com.example.imagenfsw.databinding.ActivityMainBinding
 import com.google.firebase.FirebaseApp
 import com.nipunru.nsfwdetector.NSFWDetector
@@ -28,6 +15,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    var arralist = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,27 +23,35 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseApp.initializeApp(this)
 
-        val imageUrl = " https://cdni.pornpics.com/460/1/310/59604542/59604542_011_2aac.jpg"
+        val myadapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arralist)
+        binding.text.adapter =myadapter
+
+        val imageUrl = "https://cdni.pornpics.de/460/7/107/57382708/57382708_003_1e2e.jpg"
+
+////    val imageUrl = "http://i1.ekogate.club/images/redpornpictures.com/2/943_Amber_Tn.jpg"
+
+
         GlobalScope.launch {
             val bitmap = loadBitmapFromUrl(imageUrl)
             Log.e("TAG", "onCreate: -----> " + bitmap?.height)
                 runOnUiThread {
                     binding.immage.setImageBitmap(bitmap)
                 }
-            runDetection(bitmap)
+            runDetection(bitmap,myadapter)
         }
 
     }
 
-    private fun runDetection(bitmap: Bitmap?) {
+    private fun runDetection(bitmap: Bitmap?, myadapter: ArrayAdapter<String>) {
         val demobitmap = bitmap
-        val confidenceThreshold: Float = 0.7.toFloat()//(Optional) Default is 0.7
+        val confidenceThreshold: Float = 0.1.toFloat()//(Optional) Default is 0.7
         demobitmap?.let {
             NSFWDetector.isNSFW(demobitmap, confidenceThreshold) { isNSFW, confidence, image ->
 
                 if (isNSFW) {
                    runOnUiThread {
-                       binding.text.text = isNSFW.toString()
+                       arralist.add(confidence.toString())
+                       myadapter.notifyDataSetChanged()
                        binding.text.setBackgroundColor(resources.getColor(R.color.dangers))
                    }
                     Log.e("TAG", "runDetection: " + isNSFW)
@@ -64,7 +60,8 @@ class MainActivity : AppCompatActivity() {
                         .show()
                 } else {
                     runOnUiThread {
-                        binding.text.text = isNSFW.toString()
+                        arralist.add(confidence.toString())
+                        myadapter.notifyDataSetChanged()
                         binding.text.setBackgroundColor(resources.getColor(R.color.green))
                     }
 
